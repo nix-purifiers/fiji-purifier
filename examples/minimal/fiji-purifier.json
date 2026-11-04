@@ -1,0 +1,23 @@
+{
+  "updateSites": [
+    {
+      "name": "ImageJ",
+      "url": "https://update.imagej.net/"
+    },
+    {
+      "name": "Fiji",
+      "url": "https://update.fiji.sc/"
+    },
+    {
+      "name": "Java-8",
+      "url": "https://sites.imagej.net/Java-8/"
+    },
+    {
+      "name": "IJPB-plugins",
+      "url": "https://sites.imagej.net/IJPB-plugins/"
+    }
+  ],
+  "plugins": [
+    "plugins/MorphoLibJ_.jar"
+  ]
+}
