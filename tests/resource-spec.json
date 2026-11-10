@@ -1,0 +1,8 @@
+{
+  "name": "fiji",
+  "builder": "Fiji",
+  "roots": {
+    "dilated.tif": "dilated.tif"
+  },
+  "changedFile": "build.ijm"
+}
