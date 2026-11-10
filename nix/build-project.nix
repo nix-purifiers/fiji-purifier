@@ -1,5 +1,6 @@
 {
   lib,
+  purifier,
   runCommand,
   python3,
   jdk11,
@@ -15,6 +16,8 @@
   fetchers ? { },
   doCheck ? false,
   checkCommand ? "",
+  resourceRoots ? { },
+  resourceDependencies ? [ ],
 }:
 let
   lock = readLock { inherit src lockFile; };
@@ -38,7 +41,7 @@ let
         "output"
       ]);
   };
-  project = runCommand "fiji-project" { } ''
+  builtProject = runCommand "fiji-project" { } ''
     export FIJI_PURIFIER_ENVIRONMENT=${profile} FIJI_PURIFIER_JAVA=${jdk11}/bin/java
     export FIJI_PURIFIER_OUTPUT="$out"
     mkdir -p "$out"
@@ -49,6 +52,17 @@ let
     ${python3}/bin/python ${driver}/build_project.py
     ${lib.optionalString doCheck checkCommand}
   '';
+  projections = lib.optionalAttrs (resourceRoots != { }) (
+    purifier.resourceProjections {
+      producer = builtProject;
+      roots = resourceRoots;
+      dependencies = resourceDependencies;
+      inherit runCommand python3;
+    }
+  );
+  project = builtProject // {
+    inherit projections;
+  };
   release =
     runCommand "fiji-project-release"
       {
@@ -69,6 +83,6 @@ in
     environment = profile;
   };
   tests = project;
-  inherit release;
+  inherit release projections;
   fetches = lock.entries;
 }

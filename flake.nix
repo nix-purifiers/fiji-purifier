@@ -78,6 +78,10 @@
           };
         in
         {
+          resource-projections = import ./tests/resource-projections.nix {
+            pkgs = pkgsFor system;
+            build = p.buildFijiProject;
+          };
           cli = p.cli;
           sdk = p.frozenSdk;
           inherit (build.packages) environment project;
